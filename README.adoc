@@ -1,0 +1,11 @@
+== darwinsys-ee
+
+My collection of little EE helpers that I use over and over.
+
+=== Classes
+
+Authenticator
+
+Authenticator-JPA
+
+Person
