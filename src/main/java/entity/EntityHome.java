@@ -41,17 +41,13 @@ public abstract class EntityHome<T extends Object, K extends Object>
 		System.out.println("Entity class = " + entityClass.getName());
 	}
 
-	public void create() {
+	public T create() {
 		try {
 			this.instance = entityClass.newInstance();
+			return instance;
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new RuntimeException("Failed to create instance: " + e, e);
 		}
-	}
-	
-	protected T createInstance() {
-		create();
-		return instance;
 	}
 
 	protected void setId(Object pk) {
