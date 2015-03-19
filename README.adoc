@@ -8,4 +8,8 @@ Authenticator
 
 Authenticator-JPA
 
-Person
+EntityHome - a subset of Seam2 EntityHome.
+
+EntityList is NOT provided; use Apache DeltaSpike Data for that!
+
+Person - a loginnable person, for the Authenticator.
