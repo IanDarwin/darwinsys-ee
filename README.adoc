@@ -2,14 +2,30 @@
 
 My collection of little EE helpers that I use over and over.
 
+=== Pre-Requisites
+
+If you want to use my Authenticator, you must pick one and provide a dummy subclass
+of it with the name "Authenticator", as shown here.
+
+[source,"java"]
+----
+import javax.inject.Named;
+
+@Named("Authenticator")
+public class MyAuthenticator extends AuthenticatorJPA {
+	// Empty class, just to hold the @Named on a subclass
+}
+----
+
 === Classes
 
 Authenticator
-
-Authenticator-JPA
+AuthenticatorJPA
+AuthenticatorCMS
 
 EntityHome - a subset of Seam2 EntityHome.
 
 EntityList is NOT provided; use Apache DeltaSpike Data for that!
 
 Person - a loginnable person, for the Authenticator.
+
