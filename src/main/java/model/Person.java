@@ -1,12 +1,19 @@
 package model;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -16,11 +23,18 @@ import javax.validation.constraints.NotNull;
  * @author Ian Darwin, http://darwinsys.com/
  */
 @Entity
+@Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorColumn(name="PType",
+    discriminatorType=DiscriminatorType.CHAR)
+@DiscriminatorValue(value="P")
 public class Person {
 	long id;
     String firstName;
     String lastName;
+    // Login data
     String email;
+ 	private String loginName;
+ 	private String passPhrase;
 	private String address1;
 	private String address2;
 	private String city;
@@ -31,6 +45,7 @@ public class Person {
 	private String homePhone;
 	private String busPhone;
 	private Date creationDate, lastLogin;
+	private Set<PersonRole> roles;
     
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
 	public long getId() {
@@ -38,6 +53,29 @@ public class Person {
 	}
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	@NotNull
+	public String getLoginName() {
+		return loginName;
+	}
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
+	}
+	
+	@NotNull
+	public String getPassPhrase() {
+		return passPhrase;
+	}
+	public void setPassPhrase(String passPhrase) {
+		this.passPhrase = passPhrase;
+	}
+	@OneToMany
+	public Set<PersonRole> getRoles() {
+		return roles;
+	}
+	public void setRoles(Set<PersonRole> roles) {
+		this.roles = roles;
 	}
 	public String getFirstName() {
 		return firstName;
