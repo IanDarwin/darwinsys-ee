@@ -11,7 +11,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +24,6 @@ import model.PersonRole;
  */
 @Stateful
 @SessionScoped
-@Named("authenticator")
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class AuthenticatorJPA implements Authenticator {
 
