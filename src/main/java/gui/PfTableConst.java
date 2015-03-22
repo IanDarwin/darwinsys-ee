@@ -1,9 +1,12 @@
 package gui;
 
+import javax.inject.Named;
+
 /**
  * Constants for use with PrimeFaces DataTable.
  * Arguably some should be in a resource.properties type file...
  */
+@Named("pfTableConstants")
 public class PfTableConst {
 
 	final static int ROWS = 10;
