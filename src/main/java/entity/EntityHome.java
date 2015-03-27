@@ -3,7 +3,7 @@ package entity;
 import java.io.Serializable;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.PersistenceContext;
 
 /**
  * Patterned loosely after the Seam2 Entity Framework; contains
@@ -29,7 +29,7 @@ public abstract class EntityHome<T extends Object, K extends Object>
 
 	private static final long serialVersionUID = -1L;
 
-	@PersistenceUnit
+	@PersistenceContext
 	protected EntityManager entityManager;
 	protected Class<T> entityClass;
 	protected T instance;
