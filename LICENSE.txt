@@ -1,0 +1,2 @@
+All files are under the 2-clause BSD license except the 2 files in org.jboss.seam
+which are ASL2-licensed.
