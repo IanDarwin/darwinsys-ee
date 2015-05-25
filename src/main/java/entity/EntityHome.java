@@ -12,58 +12,65 @@ import javax.persistence.PersistenceContext;
  * @Named(name="frameworkHome")
  * public class FrameworkHome extends EntityHome<Framework> {
  *
- * 	@PersistenceContext
- * 	protected EntityManager entityManager;
- *	
- * 	@Override
- * 	EntityManager getEntityManager() {
- * 		return entityManager;
- * 	}
+ *  @Override
+ *  public Framework newInstance() {
+ * 		return new Framework(); // doing any initialization/customization
+ *  }
  * }
  * </pre>
  * @author Ian Darwin
  * @param <T> The type of the JPA Entity we want to manipulate.
  */
-public abstract class EntityHome<T extends Object, K extends Object> 
+public abstract class EntityHome<T extends Object, PK extends Object> 
 	implements Serializable {
 
 	private static final long serialVersionUID = -1L;
 
-	@PersistenceContext
+	@PersistenceContext(type=PersistenceContextType.EXTENDED)
 	protected EntityManager entityManager;
-	protected Class<T> entityClass;
-	protected T instance;
-	protected Object pk;	// XXX should be a type parameter
+
+	@Inject Conversation conv;
+
+	protected T instance = newInstance();
+	protected PK pk;
 	
-	@SuppressWarnings("unchecked")
 	protected EntityHome() {
-		entityClass = (Class<T>) EntityQuery.getEntityClass(this);
-		System.out.println("Entity class = " + entityClass.getName());
 	}
 
-	public T create() {
-		try {
-			this.instance = entityClass.newInstance();
-			return instance;
-		} catch (InstantiationException | IllegalAccessException e) {
-			throw new RuntimeException("Failed to create instance: " + e, e);
-		}
-	}
+	public abstract T newInstance();
 
-	protected void setId(Object pk) {
+	protected void setId(PK pk) {
 		this.pk = pk;
 	}
-	protected Object getId() {
+	protected PK getId() {
 		return pk;
 	}
 
-	// This shalle be the only path that changes the 'instance' variable...
-    public void setInstance(T t) {
-		this.instance = t;
-	}
 	public T getInstance() {
 		return instance;
 	}
+
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void wire() {
+        if (conv.isTransient()) {
+            conv.begin();
+        }
+        System.out.println("Wire(): " + id);
+        if (id == null) {
+            instance = new Person();
+            return;
+        }
+        instance = em.find(Person.class, id);
+        if (instance == null) {
+            throw new IllegalArgumentException("Person not found by id! " + id);
+        }
+    }
+    public void wire(Long id) {
+        System.out.println("PersonHome.wire(" + id + ")");
+        setId(id);
+        wire();
+    }
+
 	
 	/** The C of CRUD - create a new T in the database */
 	public void persist(T entity) {
