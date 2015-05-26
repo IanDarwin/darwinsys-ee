@@ -16,6 +16,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -28,7 +29,7 @@ import javax.validation.constraints.NotNull;
     discriminatorType=DiscriminatorType.CHAR)
 @DiscriminatorValue(value="P")
 public class Person {
-	long id;
+	Long id;
     String firstName;
     String lastName;
     // Login data
@@ -48,10 +49,10 @@ public class Person {
 	private Set<PersonRole> roles;
     
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
@@ -89,6 +90,11 @@ public class Person {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	@Transient
+	public String getName() {
+		return getFirstName() + " " + getLastName();
+	}
+	
 	public String getEmail() {
 		return email;
 	}

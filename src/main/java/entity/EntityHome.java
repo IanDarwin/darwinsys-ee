@@ -2,8 +2,15 @@ package entity;
 
 import java.io.Serializable;
 
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.enterprise.context.Conversation;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
+
+import model.Person;
 
 /**
  * Patterned loosely after the Seam2 Entity Framework; contains
@@ -32,6 +39,8 @@ public abstract class EntityHome<T extends Object, PK extends Object>
 	@Inject Conversation conv;
 
 	protected T instance = newInstance();
+	protected Class<?> entityClass = 
+		EntityQuery.getEntityClass(instance);
 	protected PK pk;
 	
 	protected EntityHome() {
@@ -55,17 +64,17 @@ public abstract class EntityHome<T extends Object, PK extends Object>
         if (conv.isTransient()) {
             conv.begin();
         }
-        System.out.println("Wire(): " + id);
-        if (id == null) {
-            instance = new Person();
+        System.out.println("Wire(): " + pk);
+        if (pk == null) {
+            instance = newInstance();
             return;
         }
-        instance = em.find(Person.class, id);
+        instance = (T) entityManager.find(entityClass, pk);
         if (instance == null) {
-            throw new IllegalArgumentException("Person not found by id! " + id);
+            throw new IllegalArgumentException("Entity not found by id! " + pk);
         }
     }
-    public void wire(Long id) {
+    public void wire(PK id) {
         System.out.println("PersonHome.wire(" + id + ")");
         setId(id);
         wire();
@@ -79,7 +88,7 @@ public abstract class EntityHome<T extends Object, PK extends Object>
 
 	/** The R of CRUD - Download a T by primary key */
 	public T find(long id) {		
-		return entityManager.find(entityClass, id);
+		return (T) entityManager.find(entityClass, pk);
 	}
 	
 	/** The U of CRUD - update an Entity */
