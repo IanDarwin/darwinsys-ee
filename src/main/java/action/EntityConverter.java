@@ -17,7 +17,7 @@ import javax.persistence.Id;
 /**
  * The Missing Generic JPA Entity Converter for JSF2
  * Note: Assumes that the given entity has a pk of type Long
- * @author Originally based on code at
+ * @author Originally based on incomplete code at
  * http://good-helper.blogspot.ca/2013/10/generic-entity-converter-in-jsf-2-and.html
  */
 @FacesConverter("entityConverter")
@@ -50,7 +50,7 @@ public class EntityConverter implements Converter, Serializable {
 		UIComponent component,
 		String clazzAndId) {
 
-		System.out.println("GenericEntityConverterLong.getAsObject(): " + clazzAndId);
+		System.out.println("EntityConverter.getAsObject(): " + clazzAndId);
 
 		if (clazzAndId == null) {
 			return null;
@@ -83,7 +83,7 @@ public class EntityConverter implements Converter, Serializable {
 		FacesContext fc, 
 		UIComponent component,
 		Object object) {
-		System.out.println("GenericEntityConverterLong.getAsString(): " + object);
+		System.out.println("EntityConverter.getAsString(): " + object);
 		if (object == null) {
 			return "";	// Required by specification
 		}
@@ -105,8 +105,8 @@ public class EntityConverter implements Converter, Serializable {
 					return clazz.getCanonicalName() + ":" + id.toString();
 				}
 			}
-			// Sign. No joy.
-			final String mesg = "GenericEntityConverterLong.getAsString(): no Id on " + clazz;
+			// Sigh. No joy.
+			final String mesg = "EntityConverter.getAsString(): no Id on " + clazz;
 			System.err.println(mesg);
 			throw new ConverterException(mesg);
 		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
