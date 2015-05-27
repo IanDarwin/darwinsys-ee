@@ -2,6 +2,8 @@ package action;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -13,7 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Id;
 
 /**
- * The Missing Generic Entity Converter for JSF2
+ * The Missing Generic JPA Entity Converter for JSF2
  * Note: Assumes that the given entity has a pk of type Long
  * @author Originally based on code at
  * http://good-helper.blogspot.ca/2013/10/generic-entity-converter-in-jsf-2-and.html
@@ -26,7 +28,7 @@ public class EntityConverter implements Converter, Serializable {
 	private EntityManager em;
 	
 	public EntityConverter() {
-		System.out.println("GenericEntityConverterLong.GenericEntityConverterLong()");
+		// Required empty constructor
 	}
 
 	/**
@@ -87,6 +89,7 @@ public class EntityConverter implements Converter, Serializable {
 		}
 		try {
 			Class<? extends Object> clazz = object.getClass();
+			// Look for field annotation
 			for (Field f : clazz.getDeclaredFields()) {
 				if (f.isAnnotationPresent(Id.class)) {
 					f.setAccessible(true);
@@ -94,12 +97,22 @@ public class EntityConverter implements Converter, Serializable {
 					return clazz.getCanonicalName() + ":" + id.toString();
 				}
 			}
-			System.err.println("GenericEntityConverterLong.getAsString(): no Id on " + clazz);
-		} catch (IllegalArgumentException | IllegalAccessException e) {
+			// Meh. Look for method annotation.
+			for (Method m : clazz.getDeclaredMethods()) {
+				if (m.isAnnotationPresent(Id.class)) {
+					m.setAccessible(true);
+					Long id = (Long) m.invoke(object, new Object[0]);
+					return clazz.getCanonicalName() + ":" + id.toString();
+				}
+			}
+			// Sign. No joy.
+			final String mesg = "GenericEntityConverterLong.getAsString(): no Id on " + clazz;
+			System.err.println(mesg);
+			throw new ConverterException(mesg);
+		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
 			String mesg = "getAsString failed to convert " + object + " (" + e + ")";
-			System.out.println(mesg);
+			System.err.println(mesg);
 			throw new ConverterException(mesg, e);
 		}
-		return null;
 	}
 }
