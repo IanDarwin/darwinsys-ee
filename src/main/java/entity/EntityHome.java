@@ -1,11 +1,11 @@
 package entity;
 
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.enterprise.context.Conversation;
+import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,7 +17,7 @@ import javax.persistence.PersistenceContextType;
  * patterned loosely after the Seam2 Entity Framework.
  * Contains * methods to manipulate one entity. Typical usage:
  * <pre>
- * @Named(name="customerHome")
+ * @Stateful
  * public class CustomerHome extends EntityHome<Customer, Long> {
  *
  *  @Override
@@ -30,6 +30,7 @@ import javax.persistence.PersistenceContextType;
  * @param <T> The type of the JPA Entity we want to manipulate.
  * @param <PK> The type of the JPA Entity's primary key
  */
+@ConversationScoped
 public abstract class EntityHome<T extends Object, PK extends Object> 
 	implements Serializable {
 
@@ -45,8 +46,10 @@ public abstract class EntityHome<T extends Object, PK extends Object>
 	protected PK pk;
 	protected Class<?> pkClass;
 	
+	@SuppressWarnings("unchecked")
 	protected EntityHome() {
 		System.out.println("EntityHome.EntityHome()");
+		entityClass = (Class<? extends T>) newInstance().getClass();
 	}
 
 	public abstract T newInstance();
