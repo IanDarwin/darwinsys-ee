@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -10,23 +11,24 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
-import model.Person;
-
 /**
- * Patterned loosely after the Seam2 Entity Framework; contains
- * methods to manipulate one entity. Typical usage:
+ * Implements Gateway, an Adam Bien pattern whose purpose is to expose
+ * an Entity (and its relations) to the Client/Web tier; also
+ * patterned loosely after the Seam2 Entity Framework.
+ * Contains * methods to manipulate one entity. Typical usage:
  * <pre>
- * @Named(name="frameworkHome")
- * public class FrameworkHome extends EntityHome<Framework> {
+ * @Named(name="customerHome")
+ * public class CustomerHome extends EntityHome<Customer, Long> {
  *
  *  @Override
- *  public Framework newInstance() {
- * 		return new Framework(); // doing any initialization/customization
+ *  public Customer newInstance() {
+ * 		return new Customer(); // doing any initialization/customization
  *  }
  * }
  * </pre>
  * @author Ian Darwin
  * @param <T> The type of the JPA Entity we want to manipulate.
+ * @param <PK> The type of the JPA Entity's primary key
  */
 public abstract class EntityHome<T extends Object, PK extends Object> 
 	implements Serializable {
@@ -39,11 +41,12 @@ public abstract class EntityHome<T extends Object, PK extends Object>
 	@Inject Conversation conv;
 
 	protected T instance = newInstance();
-	protected Class<?> entityClass = 
-		EntityQuery.getEntityClass(instance);
+	protected Class<? extends T> entityClass;
 	protected PK pk;
+	protected Class<?> pkClass;
 	
 	protected EntityHome() {
+		System.out.println("EntityHome.EntityHome()");
 	}
 
 	public abstract T newInstance();
@@ -80,7 +83,6 @@ public abstract class EntityHome<T extends Object, PK extends Object>
         wire();
     }
 
-	
 	/** The C of CRUD - create a new T in the database */
 	public void persist(T entity) {
 		entityManager.persist(entity);
