@@ -8,6 +8,25 @@
 	<packaging>jar</packaging>
 	<name>Helpers: Person, Authenticator, EntityHome, ...</name>
 
+	<licenses>
+		<license>
+		<name>BSD 2-Clause "New" or "Revised" license</name>
+		<url>http://opensource.org/licenses/BSD-2-Clause</url>
+		<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+	    <connection>scm:git:git@github.com:IanDarwin/darwinsys-ee.git</connection>
+        <developerConnection>scm:git:git@github.com:IanDarwin/darwinsys-ee.git</developerConnection>
+		<url>git@github.com:IanDarwin/darwinsys-ee.git</url>
+	</scm>
+	<developers>
+		<developer>
+		<id>ian</id>
+		<name>Ian Darwin</name>
+		</developer>
+	</developers>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<javase.version>1.7</javase.version>
@@ -15,8 +34,18 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<build.plugins.plugin.version>1.0.1</build.plugins.plugin.version>
 		<deltaspike.version>1.2.1</deltaspike.version>
-		<primefaces.version>5.1</primefaces.version>
 	</properties>
+
+	<distributionManagement>
+		<snapshotRepository>
+		<id>ossrh</id>
+		<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 	<build>
 		<plugins>
@@ -29,6 +58,31 @@
 					<target>${javase.version}</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.3</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -39,7 +93,6 @@
 			<groupId>com.darwinsys</groupId>
 			<artifactId>darwinsys-api</artifactId>
 			<version>1.0.5</version>
-			<scope>provided</scope>
 		</dependency>
 	
 		<!-- Java EE API -->
@@ -64,7 +117,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- javassist needed on classpath for dynamic code gen -->
+		<!-- Javassist needed on DS-Data classpath for dynamic code gen -->
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
@@ -72,14 +125,36 @@
 			<scope>provided</scope>
 		</dependency>		
 
-		<!-- PrimeFaces JSF Add-on -->
-		<dependency>
-			<groupId>org.primefaces</groupId>
-			<artifactId>primefaces</artifactId>
-			<version>${primefaces.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-
 	</dependencies>
 
+	<!-- The only profile we use is for signing releases. -->
+	<profiles>
+	  <profile>
+	    <id>release-sign-artifacts</id>
+	    <activation>
+	      <property>
+		<name>performRelease</name>
+		<value>true</value>
+	      </property>
+	    </activation>
+	    <build>
+	      <plugins>
+		<plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-gpg-plugin</artifactId>
+		  <version>1.1</version>
+		  <executions>
+		    <execution>
+		      <id>sign-artifacts</id>
+		      <phase>verify</phase>
+		      <goals>
+			<goal>sign</goal>
+		      </goals>
+		    </execution>
+		  </executions>
+		</plugin>
+	      </plugins>
+	    </build>
+	  </profile>
+	</profiles>
 </project>
