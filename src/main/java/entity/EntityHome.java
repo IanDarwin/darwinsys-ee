@@ -87,7 +87,7 @@ public abstract class EntityHome<T extends Object, PK extends Object>
     }
 
 	/** The C of CRUD - create a new T in the database
-	 * @param Entity - the object to be saved
+	 * @param entity - the object to be saved
 	 */
 	public void persist(T entity) {
 		entityManager.persist(entity);

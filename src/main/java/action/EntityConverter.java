@@ -36,7 +36,7 @@ public class EntityConverter implements Converter, Serializable {
 	 * into a model data object that is appropriate for being stored
 	 * during the Apply Request Values phase of the request 
 	 * processing lifecycle." - EE JavaDoc
-	 * <br></br>
+	 * <br>
 	 * IOW, JSF calls us with a string like "package.Entity:123"
 	 * (which we generated in getAsString, below).
 	 * @param fc The FacesContext
