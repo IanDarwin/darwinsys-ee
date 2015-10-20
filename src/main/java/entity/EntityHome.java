@@ -17,10 +17,10 @@ import javax.persistence.PersistenceContextType;
  * patterned loosely after the Seam2 Entity Framework.
  * Contains * methods to manipulate one entity. Typical usage:
  * <pre>
- * @Stateful
- * public class CustomerHome extends EntityHome<Customer, Long> {
+ * // A Stateful EJB
+ * public class CustomerHome extends EntityHome&lt;Customer, Long&gt; {
  *
- *  @Override
+ *  // Annotate as Override
  *  public Customer newInstance() {
  * 		return new Customer(); // doing any initialization/customization
  *  }
@@ -86,23 +86,32 @@ public abstract class EntityHome<T extends Object, PK extends Object>
         wire();
     }
 
-	/** The C of CRUD - create a new T in the database */
+	/** The C of CRUD - create a new T in the database
+	 * @param Entity - the object to be saved
+	 */
 	public void persist(T entity) {
 		entityManager.persist(entity);
 	}
 
-	/** The R of CRUD - Download a T by primary key */
+	/** The R of CRUD - Download a T by primary key
+	 * @param id The primary key of the entity to find
+	 * @return The found entity
+	 */
 	public T find(long id) {		
 		return (T) entityManager.find(entityClass, pk);
 	}
 	
-	/** The U of CRUD - update an Entity */
+	/** The U of CRUD - update an Entity
+	 * @param entity The entity to update
+	 */
 	public void update(T entity) {
 		// Nothing to do here - if the Entity is persistent, changes to
 		// it will be persisted by the EntityManager automagically.
 	}
 	
-	/** The D of CRUD - delete an Entity. Use with care! */
+	/** The D of CRUD - delete an Entity. Use with care!
+	 * @param entity The entity to delete
+	 */
 	public void delete(T entity) {
 		entityManager.remove(entity);
 	}
