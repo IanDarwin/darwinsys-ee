@@ -6,13 +6,12 @@
 	<version>0.0.7-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Helpers: Person, Authenticator, EntityHome, ...</name>
+	<url>http://darwinsys.com/java</url>
+	<description>Code helpers for the Java Enterprise Dev</description>
 
-	<!-- This plugin set is SUPPOSED to let us do
-		mvn release:clean release:prepare
-		followed by
-		mvn release:perform
-		We'll see...
-	-->
+	<!-- The configured plugins let us do
+	 **	mvn release:clean release:prepare mvn release:perform
+	 -->
 
 	<licenses>
 		<license>
