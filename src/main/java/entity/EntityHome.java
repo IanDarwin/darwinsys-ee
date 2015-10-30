@@ -115,4 +115,11 @@ public abstract class EntityHome<T extends Object, PK extends Object>
 	public void delete(T entity) {
 		entityManager.remove(entity);
 	}
+	
+	/** Used in some places to get the list page to go to after editing
+	 * @return The name of the list page for this Entity.
+	 */
+	public String getListPage() {
+		return "/";
+	}
 }
