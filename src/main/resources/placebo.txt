@@ -1,0 +1,2 @@
+This just exists to ensure the directory is created, to stop
+Maven/Eclipse from complaining.
