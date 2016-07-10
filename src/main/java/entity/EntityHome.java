@@ -13,9 +13,8 @@ import javax.persistence.PersistenceContextType;
 
 /**
  * Implements Gateway, an Adam Bien pattern whose purpose is to expose
- * an Entity (and its relations) to the Client/Web tier; also
- * patterned loosely after the Seam2 Entity Framework.
- * Contains * methods to manipulate one entity. Typical usage:
+ * an Entity (and its relations) to the Client/Web tier, rather like a Seam2 "Home Object"
+ * Contains methods to manipulate one entity. Typical usage:
  * <pre>
  * // A Stateful EJB
  * //@Stateful @Named @ConversationScoped // Commented for JavaDoc
@@ -62,7 +61,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	public abstract T newInstance();
 	
 	public void create() {
-		instance = newInstance();
+		// Nothing to do, instance is pre-created
 	}
 
 	public T getInstance() {
