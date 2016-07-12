@@ -129,8 +129,15 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	/** The D of CRUD - delete an Entity. Use with care!
 	 * @param entity The entity to delete
 	 */
-	public String delete(T entity) {
+	public String remove(T entity) {
 		em.remove(entity);
+		conv.end();
+		return getListPage() + FORCE_REDIRECT;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public String remove() {
+		em.remove(instance);
 		conv.end();
 		return getListPage() + FORCE_REDIRECT;
 	}
