@@ -84,7 +84,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 		}
 	}
 
-	// Calls the version that is @Transactional
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void wire(PK id) {
 		System.out.println("EntityHome.wire(" + id + ")");
 		setId(id);
@@ -94,6 +94,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	/** The C of CRUD - create a new T in the database
 	 * @param entity - the object to be saved
 	 */
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String persist(T entity) {
 		System.out.println("MemberHome.save()");
 		em.persist(entity);
@@ -112,10 +113,17 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	/** The U of CRUD - update an Entity
 	 * @param entity The entity to update
 	 */
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String update(T entity) {
 		System.out.println("MemberHome.update()");
 		em.merge(instance);
 		return getListPage() + FORCE_REDIRECT;
+	}
+
+	/** Update the current Entity */
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public String update() {
+		return update(getInstance());
 	}
 	
 	/** The D of CRUD - delete an Entity. Use with care!
