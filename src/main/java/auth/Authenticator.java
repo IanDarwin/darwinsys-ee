@@ -1,4 +1,4 @@
-package action;
+package auth;
 
 /**
  * A simple Authenticator api, inspired by the one in Seam2

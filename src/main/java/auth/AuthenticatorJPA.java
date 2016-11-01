@@ -1,4 +1,4 @@
-package action;
+package auth;
 
 import java.util.Date;
 import java.util.Set;

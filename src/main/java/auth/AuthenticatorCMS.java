@@ -1,4 +1,4 @@
-package action;
+package auth;
 
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
