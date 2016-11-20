@@ -17,7 +17,7 @@ import javax.persistence.PersistenceContextType;
  * Contains methods to manipulate one entity. Typical usage:
  * <pre>
  * // A Stateful EJB
- * //@Stateful @Named @ConversationScoped // Commented for JavaDoc
+ * //@Stateful @Named @ConversationScoped // Commented out for JavaDoc
  * public class CustomerHome extends EntityHome&lt;Customer, Long&gt; {
  *
  *  // Annotate as Override
@@ -96,7 +96,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String persist(T entity) {
-		System.out.println("MemberHome.save()");
+		System.out.println("EntityHomeHome.save()");
 		em.persist(entity);
 		conv.end();
 		return getListPage() + FORCE_REDIRECT;
@@ -115,7 +115,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String update(T entity) {
-		System.out.println("MemberHome.update()");
+		System.out.println("EntityHome.update()");
 		em.merge(instance);
 		return getListPage() + FORCE_REDIRECT;
 	}
@@ -160,7 +160,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	@PreDestroy
 	public void bfn() {
 		//conv.end();
-		System.out.println("MemberHome.bfn()");
+		System.out.println("EntityHome.bfn()");
 	}
 	/** Used in some places to get the list page to go to after editing;
 	 * should normally be overridden.
