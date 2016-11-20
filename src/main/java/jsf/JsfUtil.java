@@ -34,6 +34,6 @@ public class JsfUtil {
 	 * @param message The text to be displayed via JSF
 	 */
 	public static void addMessage(String controlName, FacesMessage message) {
-		FacesContext.getCurrentInstance().addMessage(controlName, message)
+		FacesContext.getCurrentInstance().addMessage(controlName, message);
 	}
 }
