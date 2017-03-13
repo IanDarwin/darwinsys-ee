@@ -25,7 +25,7 @@ import model.PersonRole;
 @Stateful
 @SessionScoped
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-public class AuthenticatorJPA implements Authenticator {
+public class AuthenticatorJPA implements Authenticator<Person> {
 
 	private static final int TIMEOUT_MINUTES = 240;
 	private static final int SEC_PER_MIN = 60;

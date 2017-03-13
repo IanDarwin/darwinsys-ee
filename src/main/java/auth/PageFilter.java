@@ -112,7 +112,7 @@ public class PageFilter implements Filter {
 				throw new LoginFailureException("Not allowed");
 			}
 			
-			Authenticator identity = (Authenticator)session.getAttribute(LoginConstants.LOGIN_FLAG);
+			Authenticator<?> identity = (Authenticator<?>)session.getAttribute(LoginConstants.LOGIN_FLAG);
 			if (DEBUG) {
 				System.out.printf("PageFilter.doFilter(): identity = %s; ", identity);
 			}
