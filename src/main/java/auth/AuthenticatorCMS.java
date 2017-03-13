@@ -8,6 +8,8 @@ import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import model.Person;
+
 /**
  * A simple JSF-based Authenticator, inspired by the one in Seam2
  * and some code posted for public use at
@@ -16,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 @Stateful
 @SessionScoped
 @Named
-public class AuthenticatorCMS implements Authenticator {
+public class AuthenticatorCMS implements Authenticator<Person> {
 	private String username;
 	private String password;
 	private boolean loggedIn;
@@ -70,10 +72,16 @@ public class AuthenticatorCMS implements Authenticator {
 	public boolean isLoggedIn() {
 		return this.loggedIn;
 	}
+	
+	@Override
+	public Person getLoggedInUser() {
+		final Person person = new Person();
+		person.setLoginName(username);
+		return person;
+	}
 
 	@Override
 	public boolean hasRole(String role) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }
