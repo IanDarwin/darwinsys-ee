@@ -59,8 +59,10 @@ public class PageFilter implements Filter {
 	
 	private final boolean DEBUG = true;
 	
+	String JSF_PAGE_EXT;
+
 	/** Communication between the parser and the mainline;
-	 * we only look at two things in the page.xml:
+	 * WARNING we only look at two things in the page.xml:
 	 * loginRequired attribute of the <page> root element;
 	 * restriction - content of <restrict> element
 	 */
@@ -75,6 +77,19 @@ public class PageFilter implements Filter {
 	@Override
 	public void init(FilterConfig config) throws ServletException {
 		System.out.println("PageFilter.init()");
+		final ServletContext servletContext = config.getServletContext();
+		// Little dance to find the JSF filename extention so we can find the .page.xml file
+		Collection<String> mappings = servletContext.getServletRegistration("Faces Servlet").getMappings();
+		if (mappings.size() != 1) {
+			// XXX
+			throw new IllegalStateException("Can't yet handle more/less than 1 mapping, sorry");
+		}
+		final String rawMapping = ((List<String>)mappings).get(0);
+		if (!rawMapping.startsWith("*.")) {
+			// XXX
+			throw new IllegalStateException("Can't yet handle mappings other than like *.foo");
+		}
+		JSF_PAGE_EXT = rawMapping.substring(1);
 	}
 
 	/** Allow the request if the user is logged in and isn't blocked by <restrict>.
@@ -85,23 +100,9 @@ public class PageFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 
 		try {
-
 			final HttpServletRequest request = (HttpServletRequest) req;
 			final HttpServletResponse response = (HttpServletResponse) resp;
-			final HttpSession session = request.getSession();
 			final ServletContext servletContext = request.getServletContext();
-			Collection<String> mappings = servletContext.getServletRegistration("Faces Servlet").getMappings();
-			if (mappings.size() != 1) {
-				// XXX
-				throw new IllegalStateException("Can't yet handle more/less than 1 mapping, sorry");
-			}
-			final String rawMapping = ((List<String>)mappings).get(0);
-			if (!rawMapping.startsWith("*.")) {
-				// XXX
-				throw new IllegalStateException("Can't yet handle mappings other than like *.foo");
-			}
-			final String JSF_PAGE_EXT = rawMapping.substring(1);
-			
 			final String requestURI = request.getRequestURI();
 			if (DEBUG) {
 				System.out.printf("PageFilter.doFilter(): requestURI = %s; ", requestURI);
@@ -112,6 +113,7 @@ public class PageFilter implements Filter {
 				throw new LoginFailureException("Not allowed");
 			}
 			
+			final HttpSession session = request.getSession();
 			Authenticator<?> identity = (Authenticator<?>)session.getAttribute(LoginConstants.LOGIN_FLAG);
 			if (DEBUG) {
 				System.out.printf("PageFilter.doFilter(): identity = %s; ", identity);
@@ -160,9 +162,18 @@ public class PageFilter implements Filter {
 					return;
 				}
 				FacesContext fContext = getFacesContext(request, response);
+				if (DEBUG) {
+					System.out.println("About to evaluate " + pageInfo.restriction);
+				}
 				if (pageInfo.restriction != null && !evalAsBool(fContext, pageInfo.restriction)) {
+					if (DEBUG) {
+						System.out.println("eval returned TRUE");
+					}
 					response.sendRedirect(contextPath + LoginConstants.PAGE_NON_PRIV);
 					return;
+				}
+				if (DEBUG) {
+					System.out.println("eval returned FALSE");
 				}
 			} 
 			
@@ -173,7 +184,7 @@ public class PageFilter implements Filter {
 		// LAST CALL - If we get here instead of hitting a "return" above, ALLOW THE PAGE
 		chain.doFilter(req, resp);				
 	}
-	
+
 	/** Read the XML document */
 	static PageInfo parsePageFile(InputStream is) {
 		System.out.println("PageFilter.parsePageFile()");
