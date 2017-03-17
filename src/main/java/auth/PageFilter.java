@@ -162,18 +162,9 @@ public class PageFilter implements Filter {
 					return;
 				}
 				FacesContext fContext = getFacesContext(request, response);
-				if (DEBUG) {
-					System.out.println("About to evaluate " + pageInfo.restriction);
-				}
 				if (pageInfo.restriction != null && !evalAsBool(fContext, pageInfo.restriction)) {
-					if (DEBUG) {
-						System.out.println("eval returned TRUE");
-					}
 					response.sendRedirect(contextPath + LoginConstants.PAGE_NON_PRIV);
 					return;
-				}
-				if (DEBUG) {
-					System.out.println("eval returned FALSE");
 				}
 			} 
 			
