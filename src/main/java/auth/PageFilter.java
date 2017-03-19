@@ -34,6 +34,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import jsf.JsfUtil;
+
 /**
  * Combined plain-login filter AND Simple PageView filter - the latter a tiny remnant of Seam2.
  * Only implements login-required and role-required. Sample page.xml:
@@ -160,7 +162,7 @@ public class PageFilter implements Filter {
 					// User not logged in and trying unauthorized access
 					// Save where the user was trying to get to:
 					final String fullRequestUrl = requestURI + 
-							(requestRest != null ? "?" + requestRest : "");
+							(requestRest != null ? JsfUtil.FORCE_REDIRECT + "&" + requestRest : "");
 					System.out.println("Stashing " + fullRequestUrl);
 					session.setAttribute(LoginConstants.TARGET_URI_KEY, fullRequestUrl);
 					response.sendRedirect(contextPath + LoginConstants.LOGIN_PAGE + JSF_PAGE_EXT);
