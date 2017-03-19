@@ -41,7 +41,10 @@ public class AuthenticatorCMS implements Authenticator<Person> {
 		}
 	}
 
-	public void logout() {
+	/**
+	 * The equally-important logout method
+	 */
+	public String logout() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest request = (HttpServletRequest) 
 				context.getExternalContext().getRequest();
@@ -51,6 +54,7 @@ public class AuthenticatorCMS implements Authenticator<Person> {
 		} catch (ServletException e) {
 			context.addMessage(null, new FacesMessage("Logout failed."));
 		}
+		return "/";
 	}
 
 	public String getUserName() {

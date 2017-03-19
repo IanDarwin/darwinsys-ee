@@ -6,7 +6,7 @@ package auth;
 public interface Authenticator<T> {
 
 	public String login();
-	public void logout();
+	public String logout();
 
 	public String getUserName();
 	public void setUserName(String username);

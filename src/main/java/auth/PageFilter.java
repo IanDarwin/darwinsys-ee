@@ -104,12 +104,14 @@ public class PageFilter implements Filter {
 			final HttpServletResponse response = (HttpServletResponse) resp;
 			final ServletContext servletContext = request.getServletContext();
 			final String requestURI = request.getRequestURI();
+			final String requestRest = request.getQueryString();
 			if (DEBUG) {
 				System.out.printf("PageFilter.doFilter(): requestURI = %s; ", requestURI);
 			}
 
 			if (requestURI.indexOf("../") >= 0) { // Red Alert!
 				System.out.println("Red Alert: Attacking URL is " + requestURI);
+				// Downgrade to LoginFailure to avoid giving attacker any information.
 				throw new LoginFailureException("Not allowed");
 			}
 			
@@ -157,7 +159,10 @@ public class PageFilter implements Filter {
 				if (pageInfo.loginRequired && identity == null) {
 					// User not logged in and trying unauthorized access
 					// Save where the user was trying to get to:
-					session.setAttribute(LoginConstants.TARGET_URI_KEY, requestURI);
+					final String fullRequestUrl = requestURI + 
+							(requestRest != null ? "?" + requestRest : "");
+					System.out.println("Stashing " + fullRequestUrl);
+					session.setAttribute(LoginConstants.TARGET_URI_KEY, fullRequestUrl);
 					response.sendRedirect(contextPath + LoginConstants.LOGIN_PAGE + JSF_PAGE_EXT);
 					return;
 				}
