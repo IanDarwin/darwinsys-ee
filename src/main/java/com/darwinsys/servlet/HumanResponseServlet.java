@@ -56,19 +56,32 @@ public class HumanResponseServlet extends HttpServlet {
 
 	public static final String SESSION_KEY_RESPONSE = "c.d.s.RESPONSE_STRING";
 	public static final String SESSION_KEY_TIMESTAMP = "c.d.s.RESPONSE_TIME";
-	public final static String LOCAL_TMP_KEY = "com.darwinsys.servlet.LOCAL_TMP_PATH";
-	public final static String LOCAL_TMP_DIR = "/hrtmp";
+	/** An arbitrary key name used to find the value of the tmp folder in the
+	 * virtual fileystem.
+	 */
+	public final static String LOCAL_TMP_KEY = "c.d.s.LOCAL_TMP_PATH";
+	/** The default path in the virtual filesystem for temp files.
+	 * Might not want it in the public /tmp folder for security reasons?
+	 */
+	public final static String DFLT_LOCAL_TMP_DIR = "/hrtmp";
+	File dirForTmpFiles;
 	private static final long serialVersionUID = -101972891L;
 	private static final int NUM_CHARS = 7;
 	static final int H = 100;
 	static final int W = 400;
+	String tmpDir;
 
 	private JigglyTextImageWriter jiggler;
 
 	@Override
-	public void init(ServletConfig arg0) throws ServletException {
-		super.init(arg0);
+	public void init(ServletConfig cfg) throws ServletException {
+		super.init(cfg);
 		jiggler = new JigglyTextImageWriter(new Font("SansSerif", Font.BOLD, 24), W, H); // XXX initparams
+		tmpDir = getInitParameter(LOCAL_TMP_KEY);
+		if (tmpDir == null)
+			tmpDir = DFLT_LOCAL_TMP_DIR;
+		dirForTmpFiles = new File(cfg.getServletContext().getRealPath(tmpDir));
+		dirForTmpFiles.mkdirs();	// Ignore return, it probably exists
 	}
 
 	@Override
@@ -86,12 +99,8 @@ public class HumanResponseServlet extends HttpServlet {
 		// And the timestamp
 		session.setAttribute(SESSION_KEY_TIMESTAMP, System.currentTimeMillis());
 
-		String tmpDir = getInitParameter(LOCAL_TMP_KEY);
-		if (tmpDir == null)
-			tmpDir = LOCAL_TMP_DIR;
-		final File dir = new File(application.getRealPath(tmpDir));
-		dir.mkdirs();	// Ignore return, it probably exists
-        final File tempFile = File.createTempFile("challenge", ".jpg", dir);
+		
+        final File tempFile = File.createTempFile("challenge", ".jpg", dirForTmpFiles);
 
 		// Generate the image
 		OutputStream os = null;
@@ -108,7 +117,8 @@ public class HumanResponseServlet extends HttpServlet {
 		// If that didn't throw an exception, print an IMG tag
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		out.printf("<img src='/tmp/%s' width='%d' height='%d' alt='image to read for human verification'>%n",
+		out.printf("<img src='%s/%s' width='%d' height='%d' alt='image to read for human verification'>%n",
+				tmpDir,
 				tempFile.getName(), W, H);
 		out.flush();
 	}
