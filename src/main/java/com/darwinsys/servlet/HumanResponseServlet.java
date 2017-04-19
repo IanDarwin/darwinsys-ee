@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -76,22 +75,26 @@ public class HumanResponseServlet extends HttpServlet {
 	@Override
 	public void init(ServletConfig cfg) throws ServletException {
 		super.init(cfg);
+		System.out.println("HumanResponseServlet.init()");
 		jiggler = new JigglyTextImageWriter(new Font("SansSerif", Font.BOLD, 24), W, H); // XXX initparams
 		tmpDir = getInitParameter(LOCAL_TMP_KEY);
 		if (tmpDir == null)
 			tmpDir = DFLT_LOCAL_TMP_DIR;
-		dirForTmpFiles = new File(cfg.getServletContext().getRealPath(tmpDir));
+		final String realPath = cfg.getServletContext().getRealPath(tmpDir);
+		if (realPath == null) {
+			throw new ExceptionInInitializerError("getRealPath failed for " + tmpDir);
+		}
+		dirForTmpFiles = new File(realPath);
 		dirForTmpFiles.mkdirs();	// Ignore return, it probably exists
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		final ServletContext application = getServletContext();
 		final HttpSession session = request.getSession();
 
 		// create the random string
-		final String challenge = randomString();
+		final String challenge = PassPhrase.getNext(NUM_CHARS);
 
 		// save it in the session
 		session.setAttribute(SESSION_KEY_RESPONSE, challenge);
@@ -121,10 +124,6 @@ public class HumanResponseServlet extends HttpServlet {
 				tmpDir,
 				tempFile.getName(), W, H);
 		out.flush();
-	}
-
-	private String randomString() {
-		return PassPhrase.getNext(NUM_CHARS);
 	}
 
 	/**
