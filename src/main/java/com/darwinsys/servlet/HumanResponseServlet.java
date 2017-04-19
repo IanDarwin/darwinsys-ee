@@ -78,8 +78,9 @@ public class HumanResponseServlet extends HttpServlet {
 		System.out.println("HumanResponseServlet.init()");
 		jiggler = new JigglyTextImageWriter(new Font("SansSerif", Font.BOLD, 24), W, H); // XXX initparams
 		tmpDir = getInitParameter(LOCAL_TMP_KEY);
-		if (tmpDir == null)
+		if (tmpDir == null) {
 			tmpDir = DFLT_LOCAL_TMP_DIR;
+		}
 		final String realPath = cfg.getServletContext().getRealPath(tmpDir);
 		if (realPath == null) {
 			throw new ExceptionInInitializerError("getRealPath failed for " + tmpDir);
