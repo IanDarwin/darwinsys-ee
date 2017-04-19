@@ -3,24 +3,21 @@ package entity;
 import java.io.Serializable;
 
 import javax.annotation.PreDestroy;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.enterprise.context.Conversation;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import javax.transaction.Transactional;
-import javax.transaction.Transactional.TxType;
 
 /**
  * Implements Gateway, an Adam Bien pattern whose purpose is to expose
  * an Entity (and its relations) to the Client/Web tier, rather like a Seam2 "Home Object"
  * Contains methods to manipulate one entity. Typical usage:
  * <pre>
- * As a CDI-Managed bean
- * // @ManagedBean @Named @ConversationScoped
- * OR as a Stateful EJB
- * // @Stateful @Named @ConversationScoped 
- * // (Above annotations commented out here to avoid JavaDoc errors)
+ * // A Stateful EJB
+ * //@Stateful @Named @ConversationScoped // Commented out for JavaDoc
  * public class CustomerHome extends EntityHome&lt;Customer, Long&gt; {
  *
  *  // Annotate as Override
@@ -71,8 +68,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 		return instance;
 	}
 
-	//@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	@Transactional(value=TxType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void wire() {
 		System.out.println("Wire(): " + id);
 		if (conv.isTransient()) {
@@ -88,8 +84,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 		}
 	}
 
-	//@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	@Transactional(value=TxType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void wire(PK id) {
 		System.out.println("EntityHome.wire(" + id + ")");
 		setId(id);
@@ -99,8 +94,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	/** The C of CRUD - create a new T in the database
 	 * @param entity - the object to be saved
 	 */
-	//@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	@Transactional(value=TxType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String persist(T entity) {
 		System.out.println("EntityHomeHome.save()");
 		em.persist(entity);
@@ -119,8 +113,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	/** The U of CRUD - update an Entity
 	 * @param entity The entity to update
 	 */
-	//@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	@Transactional(value=TxType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String update(T entity) {
 		System.out.println("EntityHome.update()");
 		em.merge(instance);
@@ -128,30 +121,22 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	}
 
 	/** Update the current Entity */
-	//@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	@Transactional(value=TxType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String update() {
 		return update(getInstance());
 	}
 	
-	/** The D of CRUD - delete a given Entity. Use with care!
+	/** The D of CRUD - delete an Entity. Use with care!
 	 * @param entity The entity to delete
 	 */
-	@Transactional(value=TxType.REQUIRED)
 	public String remove(T entity) {
 		em.remove(entity);
 		conv.end();
 		return getListPage() + FORCE_REDIRECT;
 	}
 
-	/** The D of CRUD - delete the current Entity instance. Use with care!
-	 */
-	//@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	@Transactional(value=TxType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String remove() {
-		if (instance == null) {
-			throw new IllegalStateException("Called remove() with no instance");
-		}
 		em.remove(instance);
 		conv.end();
 		return getListPage() + FORCE_REDIRECT;
