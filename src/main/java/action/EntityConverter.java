@@ -57,6 +57,9 @@ public class EntityConverter implements Converter, Serializable {
 		}
 		try {
 			String[] split = clazzAndId.split(":");
+			// System.out.printf(
+			//	"EntityConverter: Using em %s to find %s of id %s\n", 
+			//	em, split[0], split[1]);
 			return em.find(Class.forName(split[0]), Long.valueOf(split[1]));
 		} catch (NumberFormatException | ClassNotFoundException e) {
 			String mesg = "getAsObject() failed for " + clazzAndId + "(" + e + ")";
@@ -83,7 +86,7 @@ public class EntityConverter implements Converter, Serializable {
 		FacesContext fc, 
 		UIComponent component,
 		Object object) {
-		System.out.println("EntityConverter.getAsString(): " + object);
+		// System.out.println("EntityConverter.getAsString(): " + object);
 		if (object == null) {
 			return "";	// Required by specification
 		}
