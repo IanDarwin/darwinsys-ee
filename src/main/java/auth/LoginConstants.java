@@ -18,4 +18,6 @@ public class LoginConstants {
 	// Keys
 	public static final String LOGIN_FLAG = "identity";
 	public static final String TARGET_URI_KEY = "AFTER_LOGIN_GO_HERE";
+	
+	public static final String USERS_LIST = "users_list";
 }
