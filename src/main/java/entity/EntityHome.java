@@ -158,6 +158,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	}
 
 	@PreDestroy
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void bfn() {
 		//conv.end();
 		System.out.println("EntityHome.bfn()");
