@@ -21,14 +21,17 @@ import javax.servlet.http.HttpServletResponse;
 // NOT ANNOTATED - enable in web.xml (principle of least surprise)
 public class SiteBlockerFilter implements Filter {
 	
-	final static String BAD_DOMAIN = "your-server.de";
+	static String BAD_DOMAIN = "your-server.de";
 
 	/* (non-Javadoc)
 	 * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
 	 */
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		// TODO Auto-generated method stub
+		String sitelist = filterConfig.getInitParameter("sitelist");
+		if (sitelist != null) {
+			BAD_DOMAIN = sitelist;
+		}
 	}
 
 	/* (non-Javadoc)
