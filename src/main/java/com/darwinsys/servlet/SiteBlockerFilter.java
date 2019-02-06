@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.darwinsys.servlet;
 
 import java.io.IOException;
@@ -15,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Block one or more sites by DNS; this is to combat DOS attacks.
- * Initial version is hard-coded PoC; will use context initParameter, plurality
+ * Block one or more sites by DNS, to combat DOS attacks.
+ * TODO use context initParameter as a plurality (commas? vbars?)
  */
 // NOT ANNOTATED - enable in web.xml (principle of least surprise)
 public class SiteBlockerFilter implements Filter {
@@ -51,9 +48,11 @@ public class SiteBlockerFilter implements Filter {
 		}
 		String origin = req.getRemoteHost();
 		if (origin.endsWith(BAD_DOMAIN)) {
+			// System.out.println("SiteBlockerFilter: rejecting " + origin);
 			resp.sendError(404, "Something missing here");
 			return;
 		}
+		// System.out.println("SiteBlockerFilter: accepting " + origin);
 		chain.doFilter(request, response);
 	}
 
