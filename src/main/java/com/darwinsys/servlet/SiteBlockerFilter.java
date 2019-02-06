@@ -42,7 +42,9 @@ public class SiteBlockerFilter implements Filter {
 		HttpServletResponse resp = (HttpServletResponse) response;
 
 		// Common Java Server DoS attempt: create many bogus sessions. Reject.
-		if (req.getRequestedSessionId() != null && !req.isRequestedSessionIdValid()) {
+		if (req.getRequestedSessionId() != null
+				&& req.isRequestedSessionIdFromURL()
+				&& !req.isRequestedSessionIdValid()) {
 			resp.sendError(400, "Session Expired");
 			return;
 		}
