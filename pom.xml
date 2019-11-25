@@ -4,15 +4,14 @@
 
 	<groupId>com.darwinsys</groupId>
 	<artifactId>darwinsys-ee</artifactId>
-	<version>0.3.4-SNAPSHOT</version>
+	<version>0.3.5-SNAPSHOT</version>
 
 	<packaging>jar</packaging>
 	<name>Helpers: Person, Authenticator, EntityHome, ...</name>
 	<url>http://darwinsys.com/java</url>
-	<description>Code helpers for the Java Enterprise Dev</description>
 
 	<!-- The configured plugins let us do
-	 **	mvn release:clean release:prepare mvn release:perform
+	 mvn release:clean release:prepare; mvn release:perform
 	 -->
 
 	<licenses>
