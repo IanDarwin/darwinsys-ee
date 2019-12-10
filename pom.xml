@@ -4,14 +4,15 @@
 
 	<groupId>com.darwinsys</groupId>
 	<artifactId>darwinsys-ee</artifactId>
-	<version>0.3.5-SNAPSHOT</version>
+	<version>0.3.5</version>
 
 	<packaging>jar</packaging>
 	<name>EE Helpers: Person, Authenticator, EntityHome, ...</name>
 	<url>http://darwinsys.com/java</url>
 
 	<!-- The configured plugins let us do
-	 mvn release:clean release:prepare; mvn release:perform
+	 mvn release:clean release:prepare
+	 mvn -Prelease -DskipTests -Dmaven.test.skip release:perform
 	 -->
 
 	<licenses>
@@ -25,7 +26,7 @@
 	    <connection>scm:git:git@github.com:IanDarwin/darwinsys-ee.git</connection>
         <developerConnection>scm:git:git@github.com:IanDarwin/darwinsys-ee.git</developerConnection>
 		<url>git@github.com:IanDarwin/darwinsys-ee.git</url>
-	  <tag>darwinsys-ee-0.0.7</tag>
+	  <tag>darwinsys-ee-0.3.5</tag>
   </scm>
 	<developers>
 		<developer>
@@ -82,11 +83,13 @@
 	<dependencies>
 
 		<!-- My personal API -->
+<!--
 		<dependency>
 			<groupId>com.darwinsys</groupId>
 			<artifactId>darwinsys-api</artifactId>
-			<version>1.4.0-SNAPSHOT</version>
+			<version>1.4.0</version>
 		</dependency>
+-->
 	
 		<!-- Java EE API -->
 		<dependency>
