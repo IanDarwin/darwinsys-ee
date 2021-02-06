@@ -8,6 +8,7 @@
 
 	<packaging>jar</packaging>
 	<name>EE Helpers: Person, Authenticator, EntityHome, ...</name>
+	<description>A few helpers for EE projects</description>
 	<url>http://darwinsys.com/java</url>
 
 	<!-- The configured plugins let us do
