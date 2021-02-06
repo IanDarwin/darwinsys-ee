@@ -83,13 +83,11 @@
 	<dependencies>
 
 		<!-- My personal API -->
-<!--
 		<dependency>
 			<groupId>com.darwinsys</groupId>
 			<artifactId>darwinsys-api</artifactId>
-			<version>1.4.0</version>
+			<version>1.5.14</version>
 		</dependency>
--->
 	
 		<!-- Java EE API -->
 		<dependency>
