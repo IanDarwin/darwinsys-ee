@@ -84,10 +84,12 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 		}
 	}
 
+	/** Make sure an object is in memory.
+	 * @param pkey The primary key
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void wire(PK id) {
-		System.out.println("EntityHome.wire(" + id + ")");
-		setId(id);
+	public void wire(PK pkey) {
+		System.out.println("EntityHome.wire(" + pkey + ")");
+		setId(pkey);
 		wire();
 	}
 
@@ -103,11 +105,11 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	}
 
 	/** The R of CRUD - Download a T by primary key
-	 * @param id The primary key of the entity to find
+	 * @param pkey The primary key of the entity to find
 	 * @return The found entity
 	 */
-	public T find(long id2) {		
-		return (T) em.find(entityClass, id2);
+	public T find(long pkey) {		
+		return (T) em.find(entityClass, pkey);
 	}
 	
 	/** The U of CRUD - update an Entity

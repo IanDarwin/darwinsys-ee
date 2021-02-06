@@ -43,15 +43,15 @@ import jsf.JsfUtil;
  * &lt;page xmlns="http://jboss.com/products/seam/pages"
  *       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  *       xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd"
- *         login-required='true'>
+ *         login-required='true'&gt;
  * 
- *         &lt;restrict>
+ *         &lt;restrict&gt;
  *                 #{identity.hasRole('admin')}
- *         &lt;/restrict>
+ *         &lt;/restrict&gt;
  * 
- *         &lt;action execute="#{bugList.bug.setApproved(false)}"/>
+ *         &lt;action execute="#{bugList.bug.setApproved(false)}"/&gt;
  * 
- * &lt;/page>
+ * &lt;/page&gt;
  * </pre>
  *
  * @author Ian Darwin
@@ -94,8 +94,11 @@ public class PageFilter implements Filter {
 		JSF_PAGE_EXT = rawMapping.substring(1);
 	}
 
-	/** Allow the request if the user is logged in and isn't blocked by <restrict>.
+	/** Allow the request if the user is logged in and isn't blocked by &lt;restrict&gt;.
 	 * Called before every request, so keep it light weight.
+	 * @param req The Request object
+	 * @param resp The Response object
+	 * @param chain The FilterChain object
 	 */
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp,
@@ -220,7 +223,8 @@ public class PageFilter implements Filter {
 	/**
 	 * Evaluate the "restrict" string as a JSF expression yielding boolean.
 	 * @author Stephan Rauh, http://www.beyondjava.net/blog/how-to-evaluate-jsf-expression-language-el-expressions-in-a-bean/
-	 * @param context 
+	 * @param context The JSF Context
+	 * @param p_expression The JSF-EL expression
 	 */
 	private boolean evalAsBool(FacesContext context, String p_expression) {
 		final Application application = context.getApplication();
