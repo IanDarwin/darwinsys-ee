@@ -86,6 +86,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 
 	/** Make sure an object is in memory.
 	 * @param pkey The primary key
+	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void wire(PK pkey) {
 		System.out.println("EntityHome.wire(" + pkey + ")");
@@ -95,6 +96,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 
 	/** The C of CRUD - create a new T in the database
 	 * @param entity - the object to be saved
+	 * @return The URL to go to next
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String persist(T entity) {
@@ -114,6 +116,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	
 	/** The U of CRUD - update an Entity
 	 * @param entity The entity to update
+	 * @return The URL to go to next
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String update(T entity) {
@@ -122,7 +125,9 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 		return getListPage() + FORCE_REDIRECT;
 	}
 
-	/** Update the current Entity */
+	/** Update the current Entity
+	 * @return The URL to go to next
+	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String update() {
 		return update(getInstance());
@@ -130,6 +135,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	
 	/** The D of CRUD - delete an Entity. Use with care!
 	 * @param entity The entity to delete
+	 * @return The URL to go to next
 	 */
 	public String remove(T entity) {
 		em.remove(entity);
@@ -137,6 +143,9 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 		return getListPage() + FORCE_REDIRECT;
 	}
 
+	/** Remove the currently-wired Entity
+	 * @return The URL to go to next
+	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String remove() {
 		em.remove(instance);
