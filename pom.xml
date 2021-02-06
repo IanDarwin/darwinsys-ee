@@ -11,6 +11,7 @@
 	<url>http://darwinsys.com/java</url>
 
 	<!-- The configured plugins let us do
+	 mvn -Prelease test javadoc:jar # No point continuing until this works
 	 mvn release:clean release:prepare
 	 mvn -Prelease -DskipTests -Dmaven.test.skip release:perform
 	 -->
