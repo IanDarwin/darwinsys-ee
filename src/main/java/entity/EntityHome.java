@@ -38,8 +38,6 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 
 	private static final String FORCE_REDIRECT = "?faces-redirect=true";
 	
-	private final String clazzName = getClass().getSimpleName();
-
 	@Inject Conversation conv;
 
 	protected T instance = newInstance();
@@ -49,14 +47,14 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	
 	@SuppressWarnings("unchecked")
 	protected EntityHome() {
-		System.out.println(clazzName + ".EntityHome()");
+		System.out.println("EntityHome.EntityHome()");
 		entityClass = (Class<? extends T>) instance.getClass();
 	}
 
-	protected PK getId() {
+	public PK getId() {
 		return id;
 	}
-	protected void setId(PK id) {
+	public void setId(PK id) {
 		this.id = id;
 	}
 	
@@ -72,7 +70,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void wire() {
-		System.out.println(clazzName + ".wire(" + id + ")");
+		System.out.println("Wire(): " + id);
 		if (conv.isTransient()) {
 			conv.begin();
 		}
@@ -91,7 +89,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void wire(PK pkey) {
-		System.out.println(clazzName + ".wire(" + pkey + ")");
+		System.out.println("EntityHome.wire(" + pkey + ")");
 		setId(pkey);
 		wire();
 	}
@@ -102,7 +100,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String persist(T entity) {
-		System.out.println(clazzName + "Home.save()");
+		System.out.println("EntityHomeHome.save()");
 		em.persist(entity);
 		conv.end();
 		return getListPage() + FORCE_REDIRECT;
@@ -122,7 +120,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String update(T entity) {
-		System.out.println(clazzName + ".update()");
+		System.out.println("EntityHome.update()");
 		em.merge(instance);
 		return getListPage() + FORCE_REDIRECT;
 	}
@@ -174,7 +172,7 @@ public abstract class EntityHome<T extends Object, PK extends Object> implements
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void bfn() {
 		//conv.end();
-		System.out.println(clazzName + ".bfn()");
+		System.out.println("EntityHome.bfn()");
 	}
 	/** Used in some places to get the list page to go to after editing;
 	 * should normally be overridden.
