@@ -2,9 +2,11 @@
 
 My collection of little EE helpers that I use over and over.
 
+Do not confuse with the EE examples, in `../javasrc/ee`.
+
 === Pre-Requisites
 
-If you want to use my Authenticator, you must pick one and provide a dummy subclass
+If you want to use my `Authenticator`, you must pick one and provide a dummy subclass
 of it with the name "Authenticator", as shown here.
 
 [source,"java"]
