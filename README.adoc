@@ -4,6 +4,8 @@ My collection of little EE helpers that I use over and over.
 
 Do not confuse with the EE examples, in `../javasrc/ee`.
 
+Note: 1.9.0+ of this API are permanently Jakartified.
+
 === Pre-Requisites
 
 If you want to use my `Authenticator`, you must pick one and provide a dummy subclass
