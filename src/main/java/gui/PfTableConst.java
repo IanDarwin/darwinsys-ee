@@ -1,7 +1,7 @@
 package gui;
 
-import javax.inject.Named;
-import javax.ejb.Singleton;
+import jakarta.inject.Named;
+import jakarta.ejb.Singleton;
 
 /**
  * Constants for use with PrimeFaces DataTable.

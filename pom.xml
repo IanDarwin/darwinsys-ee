@@ -39,11 +39,10 @@
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<javase.version>11</javase.version>
-		<javaee.version>8.0</javaee.version>
+		<javase.version>17</javase.version>
+		<jakartaee.version>11.0.0-M4</jakartaee.version>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<build.plugins.plugin.version>1.0.1</build.plugins.plugin.version>
-		<deltaspike.version>1.2.1</deltaspike.version>
 	</properties>
 
 	<distributionManagement>
@@ -62,7 +61,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.13.0</version>
 				<configuration>
 					<source>${javase.version}</source>
 					<target>${javase.version}</target>
@@ -84,42 +83,35 @@
 
 	<dependencies>
 
-		<!-- My personal API -->
+		<!-- My own API -->
 		<dependency>
 			<groupId>com.darwinsys</groupId>
 			<artifactId>darwinsys-api</artifactId>
-			<version>1.5.14</version>
-		</dependency>
-	
-		<!-- Java EE API -->
-		<dependency>
-			<groupId>javax</groupId>    
-			<artifactId>javaee-web-api</artifactId>    
-			<version>${javaee.version}</version>
-			<scope>provided</scope>
-		</dependency> 
- 
-		<!-- DeltaSpike Data -->
-		<dependency>
-			<groupId>org.apache.deltaspike.modules</groupId>
-			<artifactId>deltaspike-data-module-api</artifactId>
-			<version>${deltaspike.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.deltaspike.modules</groupId>
-			<artifactId>deltaspike-data-module-impl</artifactId>
-			<version>${deltaspike.version}</version>
+			<version>1.9.0-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- Javassist needed on DS-Data classpath for dynamic code gen -->
+
+		<!-- Jakarta EE API (most of it)-->
 		<dependency>
-			<groupId>org.javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>3.18.1-GA</version>
-			<scope>provided</scope>
-		</dependency>		
+			<groupId>jakarta.platform</groupId>    
+			<artifactId>jakarta.jakartaee-api</artifactId>
+			<version>${jakartaee.version}</version>  
+		</dependency> 
+
+		<!-- Jakarta CDI -->
+		<dependency>
+			<groupId>jakarta.enterprise</groupId>
+			<artifactId>jakarta.enterprise.cdi-api</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<!-- Jakarta Faces -->
+		<dependency>
+			<groupId>jakarta.faces</groupId>
+			<artifactId>jakarta.faces-api</artifactId>
+			<version>4.1.0</version>
+		</dependency>
 
 	</dependencies>
 

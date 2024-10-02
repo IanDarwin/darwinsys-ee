@@ -1,7 +1,7 @@
 package auth;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 
 /**
  * Delegating HTTPServletRequest that just overrides a few methods such as getRemoteUser(), since
