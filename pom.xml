@@ -4,7 +4,7 @@
 
 	<groupId>com.darwinsys</groupId>
 	<artifactId>darwinsys-ee</artifactId>
-	<version>0.3.10-SNAPSHOT</version>
+	<version>0.3.11-SNAPSHOT</version>
 
 	<packaging>jar</packaging>
 	<name>EE Helpers: Person, Authenticator, EntityHome, ...</name>
@@ -40,9 +40,10 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<javase.version>17</javase.version>
-		<jakartaee.version>11.0.0-M4</jakartaee.version>
+		<jakartaee.version>11.0.0</jakartaee.version>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<build.plugins.plugin.version>1.0.1</build.plugins.plugin.version>
+		<junit5.version>6.0.0</junit5.version>
 	</properties>
 
 	<distributionManagement>
@@ -103,14 +104,35 @@
 		<dependency>
 			<groupId>jakarta.enterprise</groupId>
 			<artifactId>jakarta.enterprise.cdi-api</artifactId>
-			<version>3.0.0</version>
+			<version>5.0.0-M1</version>
 		</dependency>
 
 		<!-- Jakarta Faces -->
 		<dependency>
 			<groupId>jakarta.faces</groupId>
 			<artifactId>jakarta.faces-api</artifactId>
-			<version>4.1.0</version>
+			<version>4.1.2</version>
+		</dependency>
+
+		<!-- Test early and often...  JUnit 5 with 4 compat.
+		 -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit5.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit5.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>${junit5.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

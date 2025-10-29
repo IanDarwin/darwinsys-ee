@@ -1,12 +1,14 @@
 package entity;
 
-import java.lang.reflect.ParameterizedType;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import org.junit.*;
+import java.lang.reflect.ParameterizedType;
 
 public class EntityHomeTest {
 
-	@Test @Ignore // ParameterizedType stuff is crap
+	@Test
+    @Disabled // ParameterizedType stuff is crap
 	public void testGetClassStuff() {
 
 		class Demo {
